@@ -15,8 +15,18 @@ def article_vote(redis, user, article):
             redis.hincrby(name=article, key='votes', amount=1)
 
 def article_switch_vote(redis, user, from_article, to_article):
-    # HOMEWORK 2 Part I
-    pass
+    cutoff = datetime.datetime.now() - datetime.timedelta(seconds=ONE_WEEK_IN_SECONDS)
+
+    if not (datetime.datetime.fromtimestamp(redis.zscore('time:', from_article)) < cutoff
+    	and datetime.datetime.fromtimestamp(redis.zscore('time:', to_article)) < cutoff):
+        article_id = from_article.split(':')[-1]
+        if redis.srem('voted:' + article_id, user):
+            redis.zincrby(name='score:', value=from_article, amount=-VOTE_SCORE)
+            redis.hincrby(name=from_article, key='votes', amount=-1)
+            article_vote(redis, user, to_article)
+
+
+
 
 redis = redis.StrictRedis(host='localhost', port=6379, db=0)
 # user:3 up votes article:1
@@ -31,4 +41,5 @@ article_switch_vote(redis, "user:2", "article:8", "article:1")
 # HOMEWORK 2 Part II
 # article = redis.?
 # print redis.?
-
+article = redis.zrangebyscore(name='score:', min=10, max=20)
+print redis.hget(name=article[0], key='link')
