@@ -1,0 +1,164 @@
+The following graph describes character relationships in Game of Thrones.
+
+A. Create Node:
+
+CREATE (n:Character { name: 'Tyrion', house: 'Lannister' });
+CREATE (n:Character { name: 'Jaime', house: 'Lannister'});
+CREATE (n:Character { name: 'Cersei', house: 'Lannister'});
+CREATE (n:Character { name: 'Joffrey', house: 'Lannister'});
+CREATE (n:Character { name: 'Tommen', house: 'Lannister'});
+CREATE (n:Character { name: 'Sansa', house: 'Stark'});
+CREATE (n:Character { name: 'Arya', house: 'Stark'});
+CREATE (n:Character { name: 'Margaery', house: 'Tyrell'});
+
+
+B. Create Relationships
+1.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Tyrion' AND b.name = 'Jaime'
+CREATE (a)-[r:BROTHER]->(b);
+
+2.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Tyrion' AND b.name = 'Jaime'
+CREATE (b)-[r:BROTHER]->(a);
+
+3.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Jaime' AND b.name = 'Cersei'
+CREATE (a)-[r:TWIN]->(b);
+
+4.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Jaime' AND b.name = 'Cersei'
+CREATE (b)-[r:TWIN]->(a);
+
+5.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Jaime' AND b.name = 'Cersei'
+CREATE (a)-[r:LOVER]->(b);
+
+6.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Jaime' AND b.name = 'Cersei'
+CREATE (b)-[r:LOVER]->(a);
+
+7.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Joffrey' AND b.name = 'Cersei'
+CREATE (a)-[r:SON]->(b);
+
+8.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Joffrey' AND b.name = 'Cersei'
+CREATE (b)-[r:MOTHER]->(a);
+
+9.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Joffrey' AND b.name = 'Jaime'
+CREATE (a)-[r:SON {note: 'unaware of this relation'}]->(b);
+
+10.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Joffrey' AND b.name = 'Jaime'
+CREATE (b)-[r:FATHER]->(a);
+
+11.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Tommen' AND b.name = 'Jaime'
+CREATE (a)-[r:SON {note: 'unaware of this relation'}]->(b);
+
+12.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Tommen' AND b.name = 'Jaime'
+CREATE (b)-[r:FATHER]->(a);
+
+13.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Tommen' AND b.name = 'Cersei'
+CREATE (a)-[r:SON]->(b);
+
+14.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Tommen' AND b.name = 'Cersei'
+CREATE (b)-[r:MOTHER]->(a);
+
+15.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Joffrey' AND b.name = 'Tommen'
+CREATE (a)-[r:BROTHER]->(b);
+
+16.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Joffrey' AND b.name = 'Tommen'
+CREATE (b)-[r:BROTHER]->(a);
+
+17.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Tyrion' AND b.name = 'Sansa'
+CREATE (b)-[r:EXWIFE {note: 'never liked Tyrion'}]->(a);
+
+18.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Tyrion' AND b.name = 'Sansa'
+CREATE (a)-[r:EXHUSBAND]->(b);
+
+19.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Sansa' AND b.name = 'Joffrey'
+CREATE (a)-[r:Loves then Hates]->(b);
+
+20.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Sansa' AND b.name = 'Arya'
+CREATE (a)-[r:Sister]->(b);
+
+21.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Sansa' AND b.name = 'Arya'
+CREATE (b)-[r:Sister]->(a);
+
+22.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Cersei' AND b.name = 'Arya'
+CREATE (b)-[r:Hates]->(a);
+
+23.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Margaery' AND b.name = 'Joffrey'
+CREATE (b)-[r:FIANCE {note: 'dead before married'}]->(a);
+
+24.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Margaery' AND b.name = 'Joffrey'
+CREATE (a)-[r:FIANCEE]->(b);
+
+25.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Margaery' AND b.name = 'Tommen'
+CREATE (a)-[r:Wife]->(b);
+
+26.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Margaery' AND b.name = 'Tommen'
+CREATE (b)-[r:Husband]->(a);
+
+27.
+MATCH (a:Character),(b:Character)
+WHERE a.name = 'Margaery' AND b.name = 'Cersei'
+CREATE (b)-[r:Kills {note: burn the entire KingsLanding}]->(a);
+
+
+C. Subgraph Query
+1.
+MATCH (:Character {name: 'Cersei'})-[r]->(person)
+RETURN r, person;
+
+2.
+MATCH (:Character {name: 'Jaime'})<-[r]-(person)
+RETURN r, person;
+
+
+
+
+
