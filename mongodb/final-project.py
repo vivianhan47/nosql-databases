@@ -5,10 +5,12 @@
 # and could wrap other models within a main model - user.
 #
 # Explain what will happen if coffee is spilled on one of the servers in your cluster, causing it to go down.
-# Information on that specific server could not be displayed,
+# Information stored on that specific server sector could not be displayed.
 # 
 #
 # What data is it not ok to lose in your app? What can you do in your commands to mitigate the risk of lost data?
+# Voting records and source links should not be lost.
+# Creations of multiple replicas for data could lower the risk of data lost.
 #
 #
 
